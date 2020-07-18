@@ -21,8 +21,8 @@ export default function ContentArea() {
     setModalShow({ ...modalShow, status: false, rowID: "" });
 
   // kaydet
-  const kaydet = () => {
-    fetch("http://127.0.0.1:3000/api/pageLayout/save", {
+  const kaydet = async () => {
+    const deneme = await fetch("http://127.0.0.1:3000/api/pageLayout/save", {
       method: "POST", // or 'PUT'
       headers: {
         "Content-Type": "application/json",
@@ -33,11 +33,18 @@ export default function ContentArea() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success:", data);
+        return data;
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        return err;
+      });
+
+      
+    console.log(deneme);
+    alert(deneme);
   };
 
+  //burda context geliyor
   useEffect(() => {
     fetch("http://127.0.0.1:3000/api/pageLayout/getPage", {
       method: "POST", // or 'PUT'

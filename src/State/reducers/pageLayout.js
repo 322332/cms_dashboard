@@ -4,7 +4,7 @@ import { produce } from "immer";
 
 var initialState = {
   pageName: "sayfa2",
-  pageLink:"",
+  pageLink: "",
   rows: [
     {
       rowID: uuid(),
@@ -42,6 +42,7 @@ export function pageLayout(state = initialState, action) {
       return produce(state, (draftstate) => {
         if (action.payload[0]) {
           draftstate.pageName = action.payload[0].pageName;
+          draftstate.pageLink = action.payload[0].pageLink;
           draftstate.rows = action.payload[0].rows;
         }
       });
