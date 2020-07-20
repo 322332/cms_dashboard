@@ -11,6 +11,9 @@ export default function ContentArea() {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.app);
 
+  console.log("fromcontentarea");
+  console.log(page.selectedPage);
+  console.log("fromcontentarea");
   //modal's state
   const [modalShow, setModalShow] = useState({
     status: false,
@@ -39,7 +42,6 @@ export default function ContentArea() {
         return err;
       });
 
-      
     console.log(deneme);
     alert(deneme);
   };
@@ -54,14 +56,12 @@ export default function ContentArea() {
           "eyJhbGciOiJIUzI1NiJ9.NWYwYWVmNDZkNDIxMGYxZDBjMDY3MWY2.KVN9LD_ZWmQ5I6x0c1UyiPK8HqyURrNlPN48bjYEBxg",
       },
       body: JSON.stringify({
-        pageName: page.selectedPage,
+        id: page.selectedPage,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: "GET_FROM_API", payload: data });
-
-        console.log("Success:", data);
       })
       .catch((err) => console.log(err));
   }, []);

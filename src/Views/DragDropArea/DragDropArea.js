@@ -12,6 +12,7 @@ import ComponentArea from "./ComponentArea";
 export default function DragDropArea() {
   const page = useSelector((state) => state.app);
   const dispatch = useDispatch();
+
   useEffect(() => {
     fetch("http://127.0.0.1:3000/api/components", {
       method: "POST", // or 'PUT'
@@ -29,9 +30,7 @@ export default function DragDropArea() {
       .catch((err) => {
         return err;
       });
-  });
-
-  console.log(page.selectedPage);
+  }, [page.selectedPage]);
 
   if (page.selectedPage !== "")
     return (

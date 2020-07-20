@@ -1,11 +1,10 @@
 import React from "react";
 import DragArea from "../../Components/DragArea";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function ComponentArea() {
   const page = useSelector((state) => state.componentsInfo);
-  const dispatch = useDispatch();
 
   return (
     <div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 //import { Link } from "react-router-dom";
+import uuid from "uuid";
 
 import { FaTools, FaTrash } from "react-icons/fa";
 
@@ -22,8 +23,30 @@ export default function PageCRUD() {
   const [pages, setPages] = useState([]);
   const dispatch = useDispatch();
 
+  const [upPage, setUpPage] = useState();
+
+  function deletePage(id) {
+    fetch("http://127.0.0.1:3000/api/pageLayout/deletePage", {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiJ9.NWYwYWVmNDZkNDIxMGYxZDBjMDY3MWY2.KVN9LD_ZWmQ5I6x0c1UyiPK8HqyURrNlPN48bjYEBxg",
+      },
+      body: JSON.stringify({ id: id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert(data);
+        fetchPageNames();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   function fetchPageNames() {
-    fetch("http://127.0.0.1:3000/api/pageLayout/getPageNames", {
+    fetch("http://127.0.0.1:3000/api/pageLayout/getAllPages", {
       method: "POST", // or 'PUT'
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +58,6 @@ export default function PageCRUD() {
       .then((response) => response.json())
       .then((data) => {
         setPages(data);
-        console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -46,9 +68,14 @@ export default function PageCRUD() {
     fetchPageNames();
   }, []);
 
+  const setPage = (obj) => {
+    setModalShow(true);
+    setUpPage(obj);
+  };
+
   return (
     <div>
-      <Button variant="primary" onClick={() => setModalShow(true)}>
+      <Button variant="primary" onClick={() => setPage()}>
         Yeni Sayfa Ekle
       </Button>
       <ListGroup>
@@ -59,29 +86,40 @@ export default function PageCRUD() {
                 <Link
                   to="/drag"
                   onClick={() => {
-                    dispatch({ type: "SET_SELECTEDPAGE", selectedPage: item });
+                    dispatch({
+                      type: "SET_SELECTEDPAGE",
+                      selectedPage: item.id,
+                    });
                   }}
                 >
                   {" "}
-                  {item}
+                  {item.pageName}
                 </Link>
               </Col>
               <Col md="2">
                 <Row>
+                  <Col md="4"></Col>
                   <Col md="4">
-                  </Col>
-                  <Col md="4">
+                    {/* settings button */}
                     <Button
-                      onClick={() => console.log("asd")}
+                      onClick={() =>
+                        setPage({
+                          id: item.id,
+                          pagename: item.pageName,
+                          pagelink: item.pageLink,
+                          rows: item.rows,
+                        })
+                      }
                       variant="secondary"
                       size="sm"
                     >
                       <FaTools />
                     </Button>
                   </Col>
-                  <Col  md="4">
+                  <Col md="4">
+                    {/* delete button */}
                     <Button
-                      onClick={() => console.log("asd")}
+                      onClick={() => deletePage(item.id)}
                       variant="secondary"
                       size="sm"
                     >
@@ -97,7 +135,8 @@ export default function PageCRUD() {
       <MyVerticallyCenteredModal
         show={modalShow}
         onHide={() => setModalShow(false)}
-        addpage={(page) => setPages([...pages, page])}
+        addpage={() => fetchPageNames()}
+        data={upPage}
       />
     </div>
   );
@@ -107,6 +146,30 @@ function MyVerticallyCenteredModal(props) {
   const [loading, setLoading] = useState(false);
   const [pagename, setPageName] = useState("");
   const [pagelink, setPageLink] = useState("");
+  const [id, setID] = useState("");
+  const [rows, setRows] = useState([]);
+
+  /**
+   * iki modlu çalışacak, kaydet ve update
+   * eğer props data boşsa kaydet gibi davranacak dolu ise update
+   */
+
+  useEffect(() => {
+    if (props.data !== undefined) {
+      setID(props.data.id);
+      setPageName(props.data.pagename);
+      const deletedfirstchar = props.data.pagelink.slice(
+        1,
+        props.data.pagelink.length
+      );
+      setPageLink(deletedfirstchar);
+      setRows(props.data.rows);
+    } else {
+      setID(uuid());
+      setPageName("");
+      setPageLink("");
+    }
+  }, [props.data]);
 
   const savePage = () => {
     setLoading(!loading);
@@ -119,16 +182,17 @@ function MyVerticallyCenteredModal(props) {
       },
 
       body: JSON.stringify({
+        id: id,
         pageName: pagename,
         pageLink: "/" + pagelink,
-        rows: [],
+        rows: rows,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         setLoading(false);
         props.onHide();
-        props.addpage(pagename);
+        props.addpage();
       })
       .catch((err) => {
         console.error(err);
@@ -144,7 +208,7 @@ function MyVerticallyCenteredModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Yeni Sayfa Ekle
+          {props.data ? "Düzenle" : "Kaydet"}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -157,6 +221,7 @@ function MyVerticallyCenteredModal(props) {
               <Form.Control
                 onChange={(e) => setPageName(e.target.value)}
                 type="text"
+                value={pagename}
                 placeholder="Sayfa Başlığı"
               />
             </Col>
@@ -175,6 +240,7 @@ function MyVerticallyCenteredModal(props) {
                 <FormControl
                   placeholder="Sayfa Linki"
                   aria-describedby="basic-addon1"
+                  value={pagelink}
                   onChange={(e) => setPageLink(e.target.value)}
                 />
               </InputGroup>
@@ -193,8 +259,10 @@ function MyVerticallyCenteredModal(props) {
                 role="status"
                 aria-hidden="true"
               />
+            ) : props.data ? (
+              "Düzenle"
             ) : (
-              "Ekle"
+              "Kaydet"
             )}
           </Button>{" "}
         </>

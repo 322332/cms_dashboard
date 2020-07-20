@@ -41,6 +41,7 @@ export function pageLayout(state = initialState, action) {
     case "GET_FROM_API":
       return produce(state, (draftstate) => {
         if (action.payload[0]) {
+          draftstate.id=action.payload[0].id;
           draftstate.pageName = action.payload[0].pageName;
           draftstate.pageLink = action.payload[0].pageLink;
           draftstate.rows = action.payload[0].rows;

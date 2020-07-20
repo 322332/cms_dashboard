@@ -13,7 +13,6 @@ export default function BoxTarget(props) {
   const page = useSelector((state) => state.componentsInfo);
   const dispatch = useDispatch();
 
-
   let gelenler;
   if (props.componentID) {
     page
@@ -21,15 +20,9 @@ export default function BoxTarget(props) {
       .map((item, id) => {
         gelenler = item;
       });
-    /* console.log("___");
-    console.log(props.componentID);
-    console.log(gelenler);
-    console.log("___");
-    */
   } else {
     gelenler = { componentName: null };
   }
-
 
   //sürüklenip bırakılan itemleri reduxa geç
   const addItem = (id) => {
@@ -42,7 +35,6 @@ export default function BoxTarget(props) {
       },
     });
   };
-
 
   const [{ background }, drop] = useDrop({
     accept: ItemTypes.CARD,

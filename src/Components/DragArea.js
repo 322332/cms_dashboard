@@ -28,7 +28,7 @@ function DragArea({ id, componentName }) {
     case "carousel":
       return (
         <Card ref={dragRef} bg={isDrag ? "danger" : ""}>
-          <Carousel />
+          <Carousel id={id} />
         </Card>
       );
     default:
