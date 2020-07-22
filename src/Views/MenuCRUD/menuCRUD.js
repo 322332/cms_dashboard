@@ -28,6 +28,8 @@ export default function AddMenuArea() {
     links: [],
   });
 
+  const [menus, setMenus] = useState([]);
+
   const saveMenu = () => {
     fetch("http://localhost:3000/api/menu/add", {
       method: "POST",
@@ -45,6 +47,32 @@ export default function AddMenuArea() {
       });
   };
 
+  const deleteMenu = (_id) => {
+    fetch("http://localhost:3000/api/menu/delete", {
+      method: "POST",
+      headers: {
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiJ9.NWYwYWVmNDZkNDIxMGYxZDBjMDY3MWY2.KVN9LD_ZWmQ5I6x0c1UyiPK8HqyURrNlPN48bjYEBxg",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ id: _id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert(data);
+        getAllMenus();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  useEffect(() => {
+    getAllMenus();
+  }, [menu]);
+
+
+  
   const getAllMenus = () => {
     fetch("http://127.0.0.1:3000/api/menu/getAll", {
       method: "POST",
@@ -56,7 +84,7 @@ export default function AddMenuArea() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setMenu(data);
+        setMenus(data);
       })
       .catch((err) => {
         console.error(err);
@@ -170,7 +198,7 @@ export default function AddMenuArea() {
         </Row>
         <Row>
           <Col>
-            <Container>
+            <Container className="block-example border border-dark">
               {menu.links.map((item, index) => (
                 <Row>
                   <Col md="10">
@@ -247,6 +275,33 @@ export default function AddMenuArea() {
                       </Row>
                     </Col>
                   ))}
+                </Row>
+              ))}
+            </Container>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Container className="block-example border border-dark">
+              {menus.map((item, id) => (
+                <Row key={id}>
+                  <Col key={id}>
+                    <Button
+                      onClick={() => setMenu(item)}
+                      variant="secondary"
+                      size="sm"
+                    >
+                      <FaTools />
+                    </Button>
+                    <Button
+                      onClick={() => deleteMenu(item.id)}
+                      variant="secondary"
+                      size="sm"
+                    >
+                      <FaTrash />
+                    </Button>
+                    {item.links[0].linkName} .{item.links[0].target}
+                  </Col>
                 </Row>
               ))}
             </Container>

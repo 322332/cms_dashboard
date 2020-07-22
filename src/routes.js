@@ -7,11 +7,11 @@ import pageCRUD from "./Views/PageCRUD/PageCRUD";
 
 const routes = [
   { path: "/", exact: true, name: "Home", component: Dashboard },
-  { path: "/page", name: "PageCRUD", component: pageCRUD },
+  { path: "/page", name: "Sayfa Ekle", component: pageCRUD },
   { path: "/drag", name: "DragDropArea", component: DragDropArea },
-  { path: "/menu", name: "menuCRUD", component: menuCRUD },
-  { path: "/carousel", name: "carouselCRUD", component: carouselCRUD },
-  { path: "/content", name: "contentCRUD", component: contetCRUD },
+  { path: "/menu", name: "Menü Ekle", component: menuCRUD },
+  { path: "/carousel", name: "Slider Ekle", component: carouselCRUD },
+  { path: "/content", name: "İçerik Ekle", component: contetCRUD },
 ];
 
 export default routes;

@@ -11,8 +11,9 @@ export default function ControlledCarousel(props) {
       gelenler = item;
     });
 
-  console.log(gelenler);
+  
 
+    if (gelenler !== undefined)
   return (
     <Carousel>
       {gelenler.items.map((item) => (
@@ -29,4 +30,6 @@ export default function ControlledCarousel(props) {
       ))}
     </Carousel>
   );
+
+  return <div>this component deleted</div>
 }

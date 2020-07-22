@@ -41,7 +41,7 @@ export function pageLayout(state = initialState, action) {
     case "GET_FROM_API":
       return produce(state, (draftstate) => {
         if (action.payload[0]) {
-          draftstate.id=action.payload[0].id;
+          draftstate.id = action.payload[0].id;
           draftstate.pageName = action.payload[0].pageName;
           draftstate.pageLink = action.payload[0].pageLink;
           draftstate.rows = action.payload[0].rows;
@@ -88,7 +88,37 @@ export function pageLayout(state = initialState, action) {
       });
 
     case "DELETE_COL":
-      return produce(state, (draftState) => {});
+      return produce(state, (draftState) => {
+        var row = draftState.rows.findIndex(
+          (X) => X.rowID === action.payload.rowID
+        );
+
+        draftState.rows[row].cols.splice(
+          draftState.rows[row].cols.findIndex(
+            (X) => X.colID === action.payload.colID
+          ),
+          1
+        );
+      });
+
+    case "SET_COL":
+      return produce(state, (draftState) => {
+        var row = draftState.rows.findIndex(
+          (X) => X.rowID === action.payload.rowID
+        );
+
+        draftState.rows[row].cols[
+          draftState.rows[row].cols.findIndex(
+            (X) => X.colID === action.payload.colID
+          )
+        ].md.span = action.payload.span;
+
+        draftState.rows[row].cols[
+          draftState.rows[row].cols.findIndex(
+            (X) => X.colID === action.payload.colID
+          )
+        ].md.offset = action.payload.offset;
+      });
 
     default:
       return state;

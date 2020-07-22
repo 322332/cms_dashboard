@@ -13,20 +13,24 @@ function MyCard(props) {
     .map((item, id) => {
       gelenler = item;
     });
-  return (
-    <Card>
-      <Card.Header>
-        <Nav variant="pills" defaultActiveKey="#first">
-          <Nav.Item>
-            <Card.Title>{gelenler.title}</Card.Title>
-          </Nav.Item>
-        </Nav>
-      </Card.Header>
-      <Card.Body>
-        <Card.Text>{parser(gelenler.content)}</Card.Text>
-      </Card.Body>
-    </Card>
-  );
+
+  if (gelenler !== undefined)
+    return (
+      <Card>
+        <Card.Header>
+          <Nav variant="pills" defaultActiveKey="#first">
+            <Nav.Item>
+              <Card.Title>{gelenler.title}</Card.Title>
+            </Nav.Item>
+          </Nav>
+        </Card.Header>
+        <Card.Body>
+          <Card.Text>{parser(gelenler.content)}</Card.Text>
+        </Card.Body>
+      </Card>
+    );
+
+  return <div>This component deleted. </div>;
 }
 
 export default MyCard;

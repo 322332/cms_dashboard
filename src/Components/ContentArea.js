@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import BoxTarget from "../Components/BoxTarget";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-
+import { FaTools, FaTrash, FaAndroid } from "react-icons/fa";
 import uuid from "react-uuid";
 
 export default function ContentArea() {
@@ -11,9 +11,6 @@ export default function ContentArea() {
   const dispatch = useDispatch();
   const page = useSelector((state) => state.app);
 
-  console.log("fromcontentarea");
-  console.log(page.selectedPage);
-  console.log("fromcontentarea");
   //modal's state
   const [modalShow, setModalShow] = useState({
     status: false,
@@ -42,7 +39,6 @@ export default function ContentArea() {
         return err;
       });
 
-    console.log(deneme);
     alert(deneme);
   };
 
@@ -97,32 +93,20 @@ export default function ContentArea() {
           ))}
           <Button
             onClick={() => dispatch({ type: "ADD_COL", id: rowItem.rowID })}
+            variant="secondary"
+            size="sm"
           >
-            +
+            <FaAndroid />
           </Button>
           <Button
             onClick={() => dispatch({ type: "DELETE_ROW", id: rowItem.rowID })}
+            variant="secondary"
+            size="sm"
           >
-            X
+            <FaTrash />
           </Button>
         </Row>
       ))}
-      {/** MODAL KISMI */}
-      <Modal show={modalShow.status} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{modalShow.rowID}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body></Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      {/** MODAL KISMI */}
     </Container>
   );
 }
