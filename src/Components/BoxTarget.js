@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import { useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal, InputGroup, FormControl } from "react-bootstrap";
-import { FaTrash, FaAndroid } from "react-icons/fa";
+import { FaTrash, FaWrench } from "react-icons/fa";
 
 import { ItemTypes } from "../Utils/ItemTypes";
 
@@ -11,6 +11,7 @@ import { ItemTypes } from "../Utils/ItemTypes";
 import MyCard from "./Card/MyCard";
 import Carousel from "./Carousel/Carousel";
 import Menu from "./Menu/Menu";
+import MyImage from "./MyImage/MyImage";
 
 export default function BoxTarget(props) {
   const page = useSelector((state) => state.componentsInfo);
@@ -50,6 +51,48 @@ export default function BoxTarget(props) {
   });
   if (gelenler !== undefined)
     switch (gelenler.componentName) {
+      case "image":
+        return (
+          <Container
+            ref={drop}
+            className="rounded border border-dark h-100 d-inline-block"
+            style={{ background }}
+          >
+            {props.componentID ? (
+              <MyImage key={props.componentID} id={props.componentID} />
+            ) : (
+              ""
+            )}
+            <Button
+              onClick={() => setModalShow(!modalShow)}
+              variant="secondary"
+              size="sm"
+            >
+              <FaWrench />
+            </Button>
+            <Button
+              onClick={() =>
+                dispatch({
+                  type: "DELETE_COL",
+                  payload: { colID: props.colID, rowID: props.rowID },
+                })
+              }
+              variant="secondary"
+              size="sm"
+            >
+              <FaTrash />
+            </Button>
+            {/**modal */}
+            <MyVerticallyCenteredModal
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+              rowID={props.rowID}
+              colID={props.colID}
+            />
+            {/**modal */}
+          </Container>
+        );
+
       case "content":
         return (
           <Container
@@ -67,7 +110,7 @@ export default function BoxTarget(props) {
               variant="secondary"
               size="sm"
             >
-              <FaAndroid />
+              <FaWrench />
             </Button>
             <Button
               onClick={() =>
@@ -109,7 +152,7 @@ export default function BoxTarget(props) {
               variant="secondary"
               size="sm"
             >
-              <FaAndroid />
+              <FaWrench />
             </Button>
             <Button
               onClick={() =>
@@ -151,7 +194,7 @@ export default function BoxTarget(props) {
               variant="secondary"
               size="sm"
             >
-              <FaAndroid />
+              <FaWrench />
             </Button>
             <Button
               onClick={() =>
@@ -188,7 +231,7 @@ export default function BoxTarget(props) {
               variant="secondary"
               size="sm"
             >
-              <FaAndroid />
+              <FaWrench />
             </Button>
             <Button
               onClick={() =>

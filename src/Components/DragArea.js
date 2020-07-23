@@ -5,6 +5,7 @@ import { ItemTypes } from "../Utils/ItemTypes";
 import MyCard from "./Card/MyCard2";
 import Carousel from "./Carousel/Carousel";
 import Menu2 from "./Menu/Menu2";
+import MyImage from "./MyImage/MyImage";
 
 import { useDrag } from "react-dnd";
 
@@ -30,6 +31,13 @@ function DragArea({ id, componentName }) {
       return (
         <Card ref={dragRef} bg={isDrag ? "danger" : ""}>
           <Carousel id={id} />
+        </Card>
+      );
+
+    case "image":
+      return (
+        <Card ref={dragRef} bg={isDrag ? "danger" : ""}>
+          <MyImage id={id} />
         </Card>
       );
 

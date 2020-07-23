@@ -75,7 +75,7 @@ export default function PageCRUD() {
 
   return (
     <div>
-      <Button variant="primary" onClick={() => setPage()}>
+      <Button variant="primary" onClick={() => setPage({ err: "err" })}>
         Yeni Sayfa Ekle
       </Button>
       <ListGroup>
@@ -155,19 +155,24 @@ function MyVerticallyCenteredModal(props) {
    */
 
   useEffect(() => {
+    console.log("içersi");
+    console.log(props.data);
+    console.log("içersi");
     if (props.data !== undefined) {
-      setID(props.data.id);
-      setPageName(props.data.pagename);
-      const deletedfirstchar = props.data.pagelink.slice(
-        1,
-        props.data.pagelink.length
-      );
-      setPageLink(deletedfirstchar);
-      setRows(props.data.rows);
-    } else {
-      setID(uuid());
-      setPageName("");
-      setPageLink("");
+      if (props.data.err !== "err") {
+        setID(props.data.id);
+        setPageName(props.data.pagename);
+        const deletedfirstchar = props.data.pagelink.slice(
+          1,
+          props.data.pagelink.length
+        );
+        setPageLink(deletedfirstchar);
+        setRows(props.data.rows);
+      } else {
+        setID(uuid());
+        setPageName("");
+        setPageLink("");
+      }
     }
   }, [props.data]);
 

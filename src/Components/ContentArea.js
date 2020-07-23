@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import BoxTarget from "../Components/BoxTarget";
 import { Container, Row, Col, Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { FaTools, FaTrash, FaAndroid } from "react-icons/fa";
+import { FaTrash, FaWrench } from "react-icons/fa";
 import uuid from "react-uuid";
 
 export default function ContentArea() {
@@ -96,7 +96,7 @@ export default function ContentArea() {
             variant="secondary"
             size="sm"
           >
-            <FaAndroid />
+            <FaWrench />
           </Button>
           <Button
             onClick={() => dispatch({ type: "DELETE_ROW", id: rowItem.rowID })}
